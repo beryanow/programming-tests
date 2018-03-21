@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
         int g = c, m = c;
         while (g != 0) {
             h++;
-            g /= 2;
+            g = g >> 1;
         }
         for (int j = h - 1; j >= 0; j--)
             printf("%u", (m >> j) & 1);
