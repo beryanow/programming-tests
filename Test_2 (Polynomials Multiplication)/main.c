@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 int num_amount(char *arg, int *i) {
-
     int len1 = strlen(arg);
     *i = len1 - 1;
 
@@ -13,11 +12,9 @@ int num_amount(char *arg, int *i) {
     }
 
     return max_degree;
-
 }
 
 double *implementation(int *i, char *arg, int max_degree) {
-
     char *arr = (char *) calloc(sizeof(char), *i + 1);
     double *poly = (double *) calloc(sizeof(double), max_degree + 1);
     int temp_index, degree_index = 0;
@@ -52,6 +49,7 @@ double *implementation(int *i, char *arg, int max_degree) {
             }
         }
     }
+    
     return poly;
 }
 
@@ -71,7 +69,6 @@ void factors_print(int deg_1, int deg_2, double *poly_1, double *poly_2) {
 }
 
 int main(int argc, char *argv[]) {
-
     int i;
     int deg_1 = num_amount(argv[1], &i);
     double *poly_1 = implementation(&i, argv[1], deg_1);
