@@ -12,7 +12,7 @@ double implementation(char *str) {
 
     long int len = strlen(str);
     for (int i = 0; i < len; i++) {
-        table[(int)str[i]]++;
+        table[(int) str[i]]++;
     }
 
     double sum = 0;
@@ -29,29 +29,22 @@ double implementation(char *str) {
 
 int main(int argc, char *argv[]) {
 
-    if (argc == 1) {
+    FILE *infile = fopen(argv[1], "rb");
 
-        FILE *infile = fopen("test.txt", "rb");
-        FILE *outfile = fopen("out.txt", "wb");
-
-        if ((infile == NULL) || (outfile == NULL)) {
-            printf("There is no \"test.txt\" file\n");
-            return 0;
-        }
-
-        fseek(infile, 0, SEEK_END);
-        long int file_size = ftell(infile);
-        rewind(infile);
-
-        char *main_string;
-        main_string = (char *)calloc(sizeof(char), file_size + 1);
-        fread(main_string, sizeof(char), file_size, infile);
-
-        fprintf(outfile, "%f", implementation(main_string));
-
+    if ((infile == NULL)) {
+        printf("There is no such file\n");
+        return 0;
     }
-    else
-        printf("%f", implementation(argv[1]));
+
+    fseek(infile, 0, SEEK_END);
+    long int file_size = ftell(infile);
+    rewind(infile);
+
+    char *main_string;
+    main_string = (char *) calloc(sizeof(char), file_size + 1);
+    fread(main_string, sizeof(char), file_size, infile);
+
+    printf("%f", implementation(main_string));
 
     return 0;
 }
