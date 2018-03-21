@@ -2,41 +2,41 @@
 #include <string.h>
 #include <stdlib.h>
 
-int num_amount(char *arg, long int *i) {
-    long int len1 = strlen(arg);
+int num_amount(char *arg, int *i) {
+    int len1 = strlen(arg);
     *i = len1 - 1;
-    int s = 0;
+    int max_degree = 0;
     for (int k = 0; k < len1; k++) {
-        if (arg[k] == ' ') s++;
+        if (arg[k] == ' ') max_degree++;
     }
-    return s;
+    return max_degree;
 }
 
-double *implementation(long int *i, char *arg, int s) {
-    char *arr = (char *) malloc(sizeof(char) * s + 1);
-    double *poly = (double *) malloc(sizeof(double) * +1);
-    int a, b = 0;
+double *implementation(int *i, char *arg, int max_degree) {
+    char *arr = (char *) calloc(sizeof(char), *i + 1);
+    double *poly = (double *) calloc(sizeof(double), max_degree + 1);
+    int temp_index, degree_index = 0;
     while (*i >= 0) {
-        for (long int k = *i; k >= 0; k--) {
+        for (int k = *i; k >= 0; k--) {
             if (arg[k] == ' ') {
-                a = 0;
-                for (long int h = k + 1; h <= *i; h++) {
-                    arr[a] = arg[h];
-                    a++;
+                temp_index = 0;
+                for (int h = k + 1; h <= *i; h++) {
+                    arr[temp_index] = arg[h];
+                    temp_index++;
                 }
-                poly[b] = atof(arr);
-                b++;
+                poly[degree_index] = atof(arr);
+                degree_index++;
                 *i = k - 1;
                 break;
             }
             if (k == 0) {
-                a = 0;
-                for (long int h = k; h <= *i; h++) {
-                    arr[a] = arg[h];
-                    a++;
+                temp_index = 0;
+                for (int h = k; h <= *i; h++) {
+                    arr[temp_index] = arg[h];
+                    temp_index++;
                 }
-                poly[b] = atof(arr);
-                b++;
+                poly[degree_index] = atof(arr);
+                degree_index++;
                 *i = k - 1;
             }
         }
@@ -44,27 +44,30 @@ double *implementation(long int *i, char *arg, int s) {
     return poly;
 }
 
-int main(int argc, char *argv[]) {
-
-    long int i;
-    int b1 = num_amount(argv[1], &i);
-    double *poly_1 = implementation(&i, argv[1], b1);
-
-    int b2 = num_amount(argv[2], &i);
-    double *poly_2 = implementation(&i, argv[2], b1);
-
-    int m = b1 + b2;
-    double *arr = (double *) malloc(sizeof(double) * m + 1);
-
-    for (i = 0; i <= b1; i++) {
-        for (int k = 0; k <= b2; k++) {
-            arr[i + k] += poly_1[i] * poly_2[k];
+void factors_print(int deg_1, int deg_2, double *poly_1, double *poly_2) {
+    int m = deg_1 + deg_2;
+    double *mul_table = (double *) calloc(sizeof(double), m + 1);
+    for (int i = 0; i <= deg_1; i++) {
+        for (int k = 0; k <= deg_2; k++) {
+            mul_table[i + k] += poly_1[i] * poly_2[k];
         }
     }
 
-    for (i = m; i >= 0; i--) {
-        printf("%f ", arr[i]);
+    for (int i = m; i >= 0; i--) {
+        printf("%f ", mul_table[i]);
     }
+}
+
+int main(int argc, char *argv[]) {
+
+    int i;
+    int deg_1 = num_amount(argv[1], &i);
+    double *poly_1 = implementation(&i, argv[1], deg_1);
+
+    int deg_2 = num_amount(argv[2], &i);
+    double *poly_2 = implementation(&i, argv[2], deg_2);
+
+    factors_print(deg_1, deg_2, poly_1, poly_2);
 
     return 0;
 }
