@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+struct alphabet {
+	char c;
+	double times;
+};
+
+double final_sum(int k, int len, struct alphabet* arr) {
+	double sum = 0;
+	for (int i = 0; i <= k; i++) {
+		sum += (arr[i].times / len) * (log(arr[i].times / len) / log(2.0));
+	}
+	return sum;
+}
+
+int implementation(char *str) {
+	struct alphabet *arr = (struct alphabet*)malloc(sizeof(struct alphabet*));
+	int i = 0;
+	int len = strlen(str);
+	int k = 0;
+	for (i; i < len; i++) {
+		int h = 0;
+		for (int l = 0; l <= k; l++) {
+			if (arr[l].c == str[i]) {
+				arr[l].times++;
+				h = 1;
+				break;
+			}
+		}
+		if (h == 0) {
+			arr[k].c = str[i];
+			arr[k].times = 1;
+			struct alphabet *arr = (struct alphabet*)malloc(sizeof(struct alphabet*));
+			k++;
+		}
+	}
+	printf("%f\n", -final_sum(k, len, arr) * len);
+	return 0;
+}
+
+int main(int argc, char *argv[]) {
+	if (argc != 0) {
+		char* string_1 = argv[1];
+		implementation(string_1);
+	}
+	else {
+		FILE *infile = fopen("test.txt", "rb");
+		FILE *outfile = fopen("out.txt", "wb");
+		if ((infile == NULL) || (outfile == NULL)) {
+			return 0;
+		}
+		fseek(infile, 0, SEEK_END);
+		long int file_size = ftell(infile);
+		rewind(infile);
+		char *string_2;
+		string_2 = (char*)malloc(sizeof(char)* file_size);
+		fread(string_2, sizeof(unsigned char), (size_t)file_size, infile);
+		implementation(string_2);
+	}
+	return 0;
+}
